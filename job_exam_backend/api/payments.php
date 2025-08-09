@@ -16,9 +16,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendErrorResponse('Method not allowed', 405);
 }
 
-// Check if user is logged in
-if (!isLoggedIn()) {
-    sendErrorResponse('Login required', 401);
+// Auth: require Bearer token (no session)
+$headers = function_exists('getallheaders') ? getallheaders() : [];
+if (!$headers) {
+    foreach ($_SERVER as $name => $value) {
+        if (substr($name, 0, 5) === 'HTTP_') {
+            $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+        }
+    }
+}
+$authHeader = $headers['Authorization'] ?? '';
+if (empty($authHeader) || stripos($authHeader, 'Bearer ') !== 0) {
+    sendErrorResponse('Authorization token required', 401);
+}
+$token = substr($authHeader, 7);
+$user = validateApiToken($token);
+if (!$user) {
+    sendErrorResponse('Invalid or expired token', 401);
 }
 
 // Get JSON input
@@ -32,7 +46,6 @@ if (!empty($missing_fields)) {
     sendErrorResponse('Missing required fields: ' . implode(', ', $missing_fields));
 }
 
-$user = getCurrentUser();
 $exam_id = (int)$input['exam_id'];
 $payment_method = sanitizeInput($input['payment_method']);
 $amount = (float)$input['amount'];

@@ -11,7 +11,7 @@ function authenticateUser($email, $password) {
     global $conn;
     
     $email = escapeString($conn, $email);
-    $query = "SELECT id, name, email, password, role FROM users WHERE email = '$email'";
+    $query = "SELECT id, name, email,phone, password, role FROM users WHERE email = '$email'";
     $result = mysqli_query($conn, $query);
     
     if ($result && mysqli_num_rows($result) > 0) {
@@ -123,7 +123,7 @@ function getCurrentUser() {
     if (isset($_SESSION['user_id'])) {
         global $conn;
         $user_id = (int)$_SESSION['user_id'];
-        $query = "SELECT id, name, email, role FROM users WHERE id = $user_id";
+        $query = "SELECT id, name, email, phone, role FROM users WHERE id = $user_id";
         $result = mysqli_query($conn, $query);
 
         if ($result && mysqli_num_rows($result) > 0) {
@@ -181,6 +181,7 @@ function startUserSession($user) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['name'];
     $_SESSION['user_role'] = $user['role'];
+    $_SESSION['user_phone'] = $user['phone'];
 }
 
 /**

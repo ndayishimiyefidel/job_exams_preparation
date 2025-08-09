@@ -62,7 +62,8 @@ if ($user_id) {
                 'id' => $user['id'],
                 'name' => $user['name'],
                 'email' => $user['email'],
-                'role' => $user['role']
+                'role' => $user['role'],
+                'phone' => $user['phone']
             ],
             'api_token' => $api_token
         ], 'Registration successful');
