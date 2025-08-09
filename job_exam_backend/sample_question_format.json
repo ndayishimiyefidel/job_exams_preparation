@@ -1,0 +1,99 @@
+{
+  "sample_question_format": {
+    "description": "This shows the format for questions as they are stored in the database and returned to the mobile app",
+    "note": "Correct answers are NOT included in the mobile app response for security. They are only used server-side for scoring.",
+    "database_structure": {
+      "questions_table": {
+        "id": "Auto-increment question ID",
+        "exam_id": "Foreign key to exams table",
+        "question_text": "The question text"
+      },
+      "choices_table": {
+        "id": "Auto-increment choice ID",
+        "question_id": "Foreign key to questions table",
+        "choice_text": "The choice text (A, B, C, D, E will be managed by frontend)",
+        "is_correct": "Boolean flag (1 for correct, 0 for incorrect)"
+      }
+    },
+    "mobile_app_response_format": [
+      {
+        "id": 1,
+        "question_text": "What is the capital of Rwanda?",
+        "choices": [
+          {
+            "id": 11,
+            "choice_text": "Kigali"
+          },
+          {
+            "id": 12,
+            "choice_text": "Musanze"
+          },
+          {
+            "id": 13,
+            "choice_text": "Huye"
+          },
+          {
+            "id": 14,
+            "choice_text": "Rubavu"
+          }
+        ]
+      }
+    ],
+    "correct_answer_in_database": {
+      "question_id": 1,
+      "correct_choice_id": 11,
+      "note": "This information is stored in the choices table with is_correct = 1"
+    },
+    "frontend_option_labeling": {
+      "note": "Option labels (A, B, C, D, E) are managed by the frontend/mobile app",
+      "example": {
+        "A": "Kigali (choice_id: 11)",
+        "B": "Musanze (choice_id: 12)", 
+        "C": "Huye (choice_id: 13)",
+        "D": "Rubavu (choice_id: 14)"
+      }
+    },
+    "bulk_upload_csv_format": {
+      "columns": ["exam_id", "question_text", "choice_a", "choice_b", "choice_c", "choice_d", "choice_e", "correct_answer"],
+      "example_row": ["1", "What is the capital of Rwanda?", "Kigali", "Musanze", "Huye", "Rubavu", "", "A"],
+      "note": "Correct answer column uses A, B, C, D, E to indicate which choice is correct"
+    },
+    "api_request_format": {
+      "description": "Format for creating/updating questions via API",
+      "create_question_request": {
+        "exam_id": 1,
+        "question_text": "What is the capital of France?",
+        "questionImageUrl": "https://example.com/images/france-map.jpg",
+        "choices": [
+          {
+            "choice_text": "London",
+            "is_correct": false
+          },
+          {
+            "choice_text": "Paris",
+            "is_correct": true
+          },
+          {
+            "choice_text": "Berlin",
+            "is_correct": false
+          },
+          {
+            "choice_text": "Madrid",
+            "is_correct": false
+          }
+        ]
+      },
+      "note": "Each choice object must have choice_text and is_correct properties. Exactly one choice must have is_correct: true. questionImageUrl is optional."
+    },
+    "user_registration_format": {
+      "description": "Format for user registration via API",
+      "register_request": {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "+1234567890",
+        "password": "securepassword123"
+      },
+      "note": "phone field is optional"
+    }
+  }
+}

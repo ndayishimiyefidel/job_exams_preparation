@@ -1,0 +1,70 @@
+# Database configuration (contains sensitive credentials)
+config/db_connect.php
+
+# Uploaded files (user-generated content)
+uploads/resources/*
+uploads/questions_bulk/*
+!uploads/resources/.gitkeep
+!uploads/questions_bulk/.gitkeep
+
+# Cache files
+cache/*
+!cache/.gitkeep
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Composer (if using)
+vendor/
+composer.lock
+
+# Node modules (if using any frontend tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+phpunit.xml
+.phpunit.result.cache
+coverage/
+
+# Documentation
+docs/_build/
+
+# Sample files (optional - remove if you want to keep them)
+# sample_questions.csv
+# sample_question_format.json

@@ -1,0 +1,5 @@
+# This file ensures the uploads directory is tracked by git
+# The directory structure is:
+# uploads/
+# ├── resources/     # PDFs, images, documents
+# └── questions_bulk/ # CSV/Excel files for bulk question upload

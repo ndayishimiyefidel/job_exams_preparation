@@ -1,0 +1,6 @@
+exam_id,question_text,choice_a,choice_b,choice_c,choice_d,choice_e,correct_answer
+1,What is the capital of Rwanda?,Kigali,Musanze,Huye,Rubavu,,A
+1,Which programming language is known as the language of the web?,JavaScript,Python,Java,C++,,A
+1,What does HTML stand for?,HyperText Markup Language,High Tech Modern Language,Home Tool Markup Language,Hyperlink and Text Markup Language,,A
+1,Which of the following is a database management system?,MySQL,HTTP,FTP,SMTP,,A
+1,What is the primary function of CSS?,Styling web pages,Creating databases,Processing data,Sending emails,,A
