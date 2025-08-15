@@ -1,7 +1,7 @@
 <?php
 require_once '../../includes/auth.php';
 require_once '../../includes/helpers.php';
-
+setCorsHeaders();
 // Check if user is logged in and is admin (supports both session and API token)
 $current_user = getCurrentUserOrToken();
 if (!$current_user || !isAdmin($current_user)) {
@@ -27,6 +27,7 @@ if (!empty($missing_fields)) {
 // Sanitize input
 $question_id = (int)$input['id'];
 $question_text = sanitizeInput($input['question_text']);
+$question_marks = isset($input['question_marks']) ? (int)$input['question_marks'] : 1;
 $questionImageUrl = isset($input['questionImageUrl']) ? sanitizeInput($input['questionImageUrl']) : null;
 $choices = $input['choices'];
 
@@ -67,7 +68,7 @@ mysqli_begin_transaction($conn);
 
 try {
     // Update question
-    $update_query = "UPDATE questions SET question_text = '$question_text', questionImageUrl = " . 
+    $update_query = "UPDATE questions SET question_text = '$question_text', question_marks = $question_marks, questionImageUrl = " . 
                    ($questionImageUrl ? "'$questionImageUrl'" : "NULL") . " WHERE id = $question_id";
     
     if (!mysqli_query($conn, $update_query)) {
@@ -106,6 +107,7 @@ try {
         'question_id' => $question_id,
         'exam_title' => $question['exam_title'],
         'question_text' => $question_text,
+        'question_marks' => $question_marks,
         'questionImageUrl' => $questionImageUrl,
         'choices_count' => count($choices)
     ], 'Question updated successfully');

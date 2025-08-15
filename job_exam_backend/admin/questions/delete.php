@@ -1,7 +1,7 @@
 <?php
 require_once '../../includes/auth.php';
 require_once '../../includes/helpers.php';
-
+setCorsHeaders();
 // Check if user is logged in and is admin (supports both session and API token)
 $current_user = getCurrentUserOrToken();
 if (!$current_user || !isAdmin($current_user)) {

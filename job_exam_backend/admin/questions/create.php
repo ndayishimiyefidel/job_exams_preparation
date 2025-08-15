@@ -1,6 +1,7 @@
 <?php
 require_once '../../includes/auth.php';
 require_once '../../includes/helpers.php';
+setCorsHeaders();
 
 // Check if user is logged in and is admin (supports both session and API token)
 $current_user = getCurrentUserOrToken();
@@ -27,6 +28,7 @@ if (!empty($missing_fields)) {
 // Sanitize input
 $exam_id = (int)$input['exam_id'];
 $question_text = sanitizeInput($input['question_text']);
+$question_marks = isset($input['question_marks']) ? (int)$input['question_marks'] : 1;
 $questionImageUrl = isset($input['questionImageUrl']) ? sanitizeInput($input['questionImageUrl']) : null;
 $choices = $input['choices'];
 
@@ -65,7 +67,7 @@ mysqli_begin_transaction($conn);
 
 try {
     // Insert question
-    $question_query = "INSERT INTO questions (exam_id, question_text, questionImageUrl) VALUES ($exam_id, '$question_text', " . 
+    $question_query = "INSERT INTO questions (exam_id, question_text, question_marks, questionImageUrl) VALUES ($exam_id, '$question_text', $question_marks, " . 
                      ($questionImageUrl ? "'$questionImageUrl'" : "NULL") . ")";
     
     if (!mysqli_query($conn, $question_query)) {
@@ -96,6 +98,7 @@ try {
         'question_id' => $question_id,
         'exam_title' => $exam['title'],
         'question_text' => $question_text,
+        'question_marks' => $question_marks,
         'questionImageUrl' => $questionImageUrl,
         'choices_count' => count($choices)
     ], 'Question created successfully');

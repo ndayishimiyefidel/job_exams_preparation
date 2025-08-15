@@ -2,6 +2,8 @@
 require_once '../../includes/auth.php';
 require_once '../../includes/helpers.php';
 
+//SET CORS
+setCorsHeaders();
 // Check if user is logged in and is admin (supports both session and API token)
 $current_user = getCurrentUserOrToken();
 if (!$current_user || !isAdmin($current_user)) {
@@ -58,15 +60,16 @@ if (($handle = fopen($filepath, 'r')) !== false) {
     fgetcsv($handle);
 
     while (($data = fgetcsv($handle)) !== false) {
-        // Expecting: exam_id, question_text, choice_a, choice_b, choice_c, choice_d, choice_e, correct_answer
-        if (count($data) >= 8) {
-            $question_text = sanitizeInput($data[1]);
-            $choice_a = sanitizeInput($data[2]);
-            $choice_b = sanitizeInput($data[3]);
-            $choice_c = sanitizeInput($data[4]);
-            $choice_d = sanitizeInput($data[5]);
-            $choice_e = sanitizeInput($data[6]);
-            $correct_answer = strtoupper(trim($data[7]));
+        // Expecting: question_text, choice_a, choice_b, choice_c, choice_d, choice_e, correct_answer [, marks]
+        if (count($data) >= 7) {
+            $question_text = sanitizeInput($data[0]);
+            $choice_a = sanitizeInput($data[1]);
+            $choice_b = sanitizeInput($data[2]);
+            $choice_c = sanitizeInput($data[3]);
+            $choice_d = sanitizeInput($data[4]);
+            $choice_e = sanitizeInput($data[5]);
+            $correct_answer = strtoupper(trim($data[6]));
+            $question_marks = isset($data[7]) ? (int)$data[7] : 1; // Default to 1 if not provided
 
             // Validate correct answer (A, B, C, D, E)
             $valid_answers = ['A', 'B', 'C', 'D', 'E'];
@@ -75,8 +78,13 @@ if (($handle = fopen($filepath, 'r')) !== false) {
                 continue;
             }
 
+            // Validate marks (must be positive integer)
+            if ($question_marks < 1) {
+                $question_marks = 1; // Default to 1 if invalid
+            }
+
             // Insert question
-            $question_query = "INSERT INTO questions (exam_id, question_text) VALUES ($exam_id, '$question_text')";
+            $question_query = "INSERT INTO questions (exam_id, question_text, question_marks) VALUES ($exam_id, '$question_text', $question_marks)";
 
             if (mysqli_query($conn, $question_query)) {
                 $question_id = mysqli_insert_id($conn);

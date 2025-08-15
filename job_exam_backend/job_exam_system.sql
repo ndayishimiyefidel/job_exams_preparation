@@ -11,7 +11,8 @@ CREATE TABLE users (
     phone VARCHAR(20),
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Positions (e.g., Bank Teller, Developer)
@@ -38,6 +39,7 @@ CREATE TABLE questions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     exam_id INT NOT NULL,
     question_text TEXT NOT NULL,
+    question_marks INT DEFAULT 1,
     questionImageUrl VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
